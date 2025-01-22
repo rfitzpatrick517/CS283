@@ -31,6 +31,10 @@ int setup_buff(char *buff, char *user_str, int len){
     int count = 0; // counts number of characters copied
     int consec_whitespace = 0; // Handles cases where multiple whitespace characters are in user string
 
+    while (*user_pointer == ' ' || *user_pointer == '\t') {
+        user_pointer++; // skips leading whitespace
+    }
+
     while (*user_pointer != '\0') { // loops until end of user string
         if (*user_pointer == ' '  || *user_pointer == '\t') { // checks for whitespace (space or tab)
             if (consec_whitespace == 0 && count < len) {
@@ -52,6 +56,12 @@ int setup_buff(char *buff, char *user_str, int len){
         user_pointer++; 
     }
     
+    // Created this statement when debugging due to an issue of the buffer having an extra space at the end
+    if (buff_pointer > buff && *(buff_pointer - 1) == ' ') {
+        buff_pointer--;
+        count--;
+    }  
+
     // Remainder of buffer is filled with '.'
     while (count < len) {
         *buff_pointer = '.';
@@ -59,15 +69,17 @@ int setup_buff(char *buff, char *user_str, int len){
         count++;
     }
 
+
     return count; // Returns length of the user supplied string
 }
 
+// NOTE: added brackets around buffer so it would pass tests
 void print_buff(char *buff, int len){
-    printf("Buffer:  ");
+    printf("Buffer:  [");
     for (int i=0; i<len; i++){
         putchar(*(buff+i));
     }
-    putchar('\n');
+    printf("]\n");
 }
 
 void usage(char *exename){
