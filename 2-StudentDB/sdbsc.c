@@ -121,7 +121,7 @@ int add_student(int fd, int id, char *fname, char *lname, int gpa)
 
     // check if student already exists using get_student
     student_t student;
-    if (get_student(fd, id &student) == NO_ERROR) {
+    if (get_student(fd, id, &student) == NO_ERROR) {
         printf(M_ERR_DB_ADD_DUP, id);
         return ERR_DB_OP;
     }
@@ -133,7 +133,7 @@ int add_student(int fd, int id, char *fname, char *lname, int gpa)
 
     // calculate offset and write the new student record
     off_t offset = id * STUDENT_RECORD_SIZE;
-    if (lseek(fd, offset, SEEK_set) == -1 || write(fd, &new_student, STUDENT_RECORD_SIZE) == -1) {
+    if (lseek(fd, offset, SEEK_SET) == -1 || write(fd, &new_student, STUDENT_RECORD_SIZE) == -1) {
         printf(M_ERR_DB_WRITE);
         return ERR_DB_FILE;
     }
