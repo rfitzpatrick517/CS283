@@ -77,7 +77,7 @@ int main()
             printf(CMD_ERR_PIPE_LIMIT, CMD_MAX);
             continue;
         } else if (rc != OK) {
-            fprintf(stderr, "Error parsing command line\n")
+            fprintf(stderr, "Error parsing command line\n");
             continue;
         }
 

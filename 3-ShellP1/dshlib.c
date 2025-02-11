@@ -73,7 +73,7 @@ int build_cmd_list(char *cmd_line, command_list_t *clist)
             if (arg != NULL) {
                 // check if args are too long
                 if (strlen(arg) >= ARG_MAX) {
-                    return ERR_CMD_OR_ARGS_TOO_BIG
+                    return ERR_CMD_OR_ARGS_TOO_BIG;
                 }
 
                 strncpy(clist->commands[clist->num].exe, arg, ARG_MAX - 1);
