@@ -47,7 +47,7 @@
 
     int main()
     {
-        char cmd_buff[SH_CMD_MAX];
+        char *cmd_buff = malloc(SH_CMD_MAX);
         command_list_t clist;
 
         while (1) {
@@ -99,5 +99,6 @@
             }
         }
 
+        free(cmd_buff);
         return 0; // exits program
     }

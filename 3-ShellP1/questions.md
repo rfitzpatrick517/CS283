@@ -1,0 +1,30 @@
+1. In this assignment I suggested you use `fgets()` to get user input in the main while loop. Why is `fgets()` a good choice for this application?
+
+    > **Answer**:  fgets() is a great choice for many reasons. For one, it prevents buffer overflow by limiting input size and reading at most SH_CMD_MAX -1 characters. It also preserves spaces and special characters, which is very important for command-line parsing. Additionally, fgets() will return NULL at EOF, which allows terminating reading user input to be easy. It can also capture the newline character which is another important thing for command-line parsing. Finally, it is commonly used with stdin which is very important for this application.
+
+2. You needed to use `malloc()` to allocte memory for `cmd_buff` in `dsh_cli.c`. Can you explain why you needed to do that, instead of allocating a fixed-size array?
+
+    > **Answer**:  Malloc allows memory to be allocated dynamically, meaning that the memory is only used when needed. A fixed-size array would always use SH_CMD_MAX bytes, even when the actual input is smaller than this. Using malloc conserves memory and is more efficient by only using memory when it is needed.
+
+
+3. In `dshlib.c`, the function `build_cmd_list(`)` must trim leading and trailing spaces from each command before storing it. Why is this necessary? If we didn't trim spaces, what kind of issues might arise when executing commands in our shell?
+
+    > **Answer**:  Trimming leading and trailing spaces is necessary because it ensures that commands are parsed properly. For example, if the command "   exit" was typed, and we didn't trim the leading spaces, the exit command wouldn't be recognized because we use strcmp to see what command has been inputted. As mentioned, the main issue that would arise is that the incorrect command would be executed if we didn't trim spaces. This also helps with parsing arguments, since something like "echo hello " would print " hello ", rather than just "hello". Overall, trimming leading and trailing spaces helps with consistency with user input and makes sure that the intended command is executed as well as its arguments.
+
+4. For this question you need to do some research on STDIN, STDOUT, and STDERR in Linux. We've learned this week that shells are "robust brokers of input and output". Google _"linux shell stdin stdout stderr explained"_ to get started.
+
+- One topic you should have found information on is "redirection". Please provide at least 3 redirection examples that we should implement in our custom shell, and explain what challenges we might have implementing them.
+
+    > **Answer**:  One example is redirecting standard output to a file, such as "command > output.txt". The challenges of this would be that we would have to handle opening, writing, and closing files. We would also have to deal with file permissions to ensure that we are even able to write into the file. Another example is redirecting standard error to a file, such as "command 2> error.log". The challenge of this would be managing file descriptors to make sure that error messages are directed to the correct file. This requires knowledge of file descriptor numbers. A third example would be redirecting both standard output and standard error to the same file, such as "command > output.log 2>&1". This command specifically means that we redirect the standard output and standard error of command to output.log, with the "2>&1" describing that we redirect file descriptor 2 (stderr) to the same location as file descriptor 1 (stdout). The challenges of this would be having to understand the order of redirection operations, as well as properly parsing and applying the redirection operations in the right order.
+
+- You should have also learned about "pipes". Redirection and piping both involve controlling input and output in the shell, but they serve different purposes. Explain the key differences between redirection and piping.
+
+    > **Answer**:  Redirection is used to redirect stdin, stdout, or stderr to/from files, while piping is used to pass the output of a command directly into the input of another. Piping is mainly used for chaining multiple commands together. Additionally, the syntax is different where redirection uses the "<, >" symbols and piping uses the "|" symbol. Redirection is best used when saving output, log errors, or reading input to a file.
+
+- STDERR is often used for error messages, while STDOUT is for regular output. Why is it important to keep these separate in a shell?
+
+    > **Answer**:  Keeping these separate in a shell is improtant because it allows for much clearer distinction between regular output and error messages. This can be very important when trying to redirect stderr or stdout to a file, since we can just refer to stdout and stderr to do this while using the correct symbols. The separation can also be very helpful when debugging, since we can refer directly to stderr to find possible errors, rather than going through both stdout and stderr to find errors.
+
+- How should our custom shell handle errors from commands that fail? Consider cases where a command outputs both STDOUT and STDERR. Should we provide a way to merge them, and if so, how?
+
+    > **Answer**:  Our custom shell should keep stdout and stderr separate by default, since this can allow us to easily distinguish between the regular output and any possible error messages. We should also implement a way to merge stdout and stderr, which can be done using "command > output.log 2>&1", which was explained in the first part of question 4, where this merges both stderr and stdout into output.log. If we provide clear error messages when things fail, the user can then decide if they want to merge stderr and stdout or keep them separate, which is why it is important that we keep it separate by default.
