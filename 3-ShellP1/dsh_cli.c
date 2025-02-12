@@ -44,7 +44,7 @@
  *
  *  See the provided test cases for output expectations.
  */
-int main()
+ int main()
 {
     char cmd_buff[SH_CMD_MAX];
     command_list_t clist;
