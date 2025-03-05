@@ -9,6 +9,7 @@
 #define CMD_ARGV_MAX (CMD_MAX + 1)
 // Longest command that can be read from the shell
 #define SH_CMD_MAX EXE_MAX + ARG_MAX
+#define CMD_PIPE_MAX 10
 
 typedef struct command
 {
@@ -21,6 +22,8 @@ typedef struct cmd_buff
     int  argc;
     char *argv[CMD_ARGV_MAX];
     char *_cmd_buffer;
+    char *input_file;
+    char *output_file;
 } cmd_buff_t;
 
 /* WIP - Move to next assignment 
@@ -89,5 +92,6 @@ int execute_pipeline(command_list_t *clist);
 #define CMD_OK_HEADER       "PARSED COMMAND LINE - TOTAL COMMANDS %d\n"
 #define CMD_WARN_NO_CMD     "warning: no commands provided\n"
 #define CMD_ERR_PIPE_LIMIT  "error: piping limited to %d commands\n"
+#define CMD_ERR_EXECUTE     "error: unable to execute external command\n"
 
 #endif
